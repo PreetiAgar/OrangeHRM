@@ -2,10 +2,13 @@ package hrm;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.time.Duration;
+import java.util.Arrays;
 import java.util.Properties;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterMethod;
@@ -27,7 +30,13 @@ public class BaseTest {
 		if(browserName.equalsIgnoreCase("chrome"))
 		{
 			WebDriverManager.chromedriver().setup();
-			 driver=new ChromeDriver();
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--disable-blink-features=AutomationControlled");
+			options.setExperimentalOption("excludeSwitches", Arrays.asList("enable-automation"));
+			options.setExperimentalOption("useAutomationExtension", false);
+
+			 driver = new ChromeDriver(options);
+			
 		}else if(browserName.equalsIgnoreCase("firefox"))
 		{
 			WebDriverManager.firefoxdriver().setup();
@@ -35,10 +44,12 @@ public class BaseTest {
 		}
 		else if(browserName.equalsIgnoreCase("edge"))
 		{
-			WebDriverManager.edgedriver().setup();
+			//WebDriverManager.edgedriver().setup();
+			System.setProperty("webdriver.edge.driver", "C://drivers//msedgedriver.exe");
 			 driver=new EdgeDriver();
 		}
 		driver.manage().window().maximize();
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
 		return driver;
 	}
 	@BeforeMethod

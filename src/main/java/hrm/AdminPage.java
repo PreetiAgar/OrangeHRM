@@ -1,5 +1,7 @@
 package hrm;
 
+import java.time.Duration;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -26,6 +28,7 @@ public class AdminPage extends AbstractComponents {
 	By dropdownIcon=By.xpath("//div[@class='oxd-select-text--after']");
 	
 	public void goToAdmin() {
+		driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(15));
 		waitForElementToAppear(Admin);
 		Admin.click();
 	
